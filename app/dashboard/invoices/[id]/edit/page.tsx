@@ -3,9 +3,10 @@ import { notFound } from "next/navigation";
 import Form from '@/app/ui/invoices/edit-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 
-// Correct params typing (no Promise wrapper needed)
-export default async function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
+// Adjust params typing to Promise-based to align with canary PageProps expectation
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+  const resolved = await params;
+  const { id } = resolved;
   const [invoice, customers] = await Promise.all([
     fetchInvoiceById(id),
     fetchCustomers(),
