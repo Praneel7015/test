@@ -8,16 +8,13 @@ import { lusitana } from '@/app/ui/fonts';
 
 export const metadata = { title: 'Customers' };
 
-export default async function Page({
-	searchParams,
-}: {
-	searchParams?: {
-		query?: string;
-		page?: string;
-	};
-}) {
-	const query = searchParams?.query || '';
-	const currentPage = Number(searchParams?.page) || 1;
+type CustomerSearch = { [key: string]: string | string[] | undefined };
+export default async function Page({ searchParams }: { searchParams?: Promise<CustomerSearch>; }) {
+	const resolved = (await searchParams) || {};
+	const queryValue = resolved.query;
+	const pageValue = resolved.page;
+	const query = Array.isArray(queryValue) ? queryValue[0] : (queryValue || '');
+	const currentPage = Number(Array.isArray(pageValue) ? pageValue[0] : pageValue) || 1;
 	const totalPages = await fetchCustomersPages(query);
 	return (
 		<div className="w-full">

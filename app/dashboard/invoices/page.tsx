@@ -12,16 +12,13 @@ export const metadata: Metadata = {
   title: 'Invoices',
 };
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams?: {
-    query?: string;
-    page?: string;
-  };
-}) {
-  const query = searchParams?.query || '';
-  const currentPage = Number(searchParams?.page) || 1;
+type InvoiceSearch = { [key: string]: string | string[] | undefined };
+export default async function Page({ searchParams }: { searchParams?: Promise<InvoiceSearch>; }) {
+  const resolved = (await searchParams) || {};
+  const queryValue = resolved.query;
+  const pageValue = resolved.page;
+  const query = Array.isArray(queryValue) ? queryValue[0] : (queryValue || '');
+  const currentPage = Number(Array.isArray(pageValue) ? pageValue[0] : pageValue) || 1;
   const totalPages = await fetchInvoicesPages(query);
   return (
     <div className="w-full">
