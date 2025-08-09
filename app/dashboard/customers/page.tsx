@@ -5,6 +5,7 @@ import { fetchCustomersPages } from '@/app/lib/data';
 import { Suspense } from 'react';
 import { CustomersTableSkeleton } from '@/app/ui/skeletons';
 import { lusitana } from '@/app/ui/fonts';
+import { FormattedCustomersTable } from '@/app/lib/definitions';
 
 export const metadata = { title: 'Customers' };
 
@@ -45,6 +46,6 @@ async function CustomersTableServer({
 	// To keep parity with invoices table (which fetches inside component),
 	// We'll fetch in a new server wrapper and pass formatted data down.
 	const { fetchFilteredCustomers } = await import('@/app/lib/data');
-	const data = await fetchFilteredCustomers(query, currentPage);
-	return <CustomersTable customers={data as any} />;
+	const data: FormattedCustomersTable[] = await fetchFilteredCustomers(query, currentPage);
+	return <CustomersTable customers={data} />;
 }
