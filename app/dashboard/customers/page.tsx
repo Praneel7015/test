@@ -8,13 +8,14 @@ import { lusitana } from '@/app/ui/fonts';
 
 export const metadata = { title: 'Customers' };
 
-export default async function Page(props: {
-	searchParams?: Promise<{
+export default async function Page({
+	searchParams,
+}: {
+	searchParams?: {
 		query?: string;
 		page?: string;
-	}>;
+	};
 }) {
-	const searchParams = await props.searchParams;
 	const query = searchParams?.query || '';
 	const currentPage = Number(searchParams?.page) || 1;
 	const totalPages = await fetchCustomersPages(query);
