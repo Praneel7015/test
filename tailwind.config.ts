@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import colors from 'tailwindcss/colors';
 
 const config: Config = {
   content: [
@@ -17,6 +18,7 @@ const config: Config = {
           500: '#0070F3',
           600: '#2F6FEB',
         },
+        grey: colors.gray, // alias so we can use British spelling across the UI
       },
     },
     keyframes: {
